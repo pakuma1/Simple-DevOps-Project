@@ -3,7 +3,7 @@ name: manual approver
 on:
   push:
     branches:
-    - release-**
+    - release_**
 
 jobs:
   build:
