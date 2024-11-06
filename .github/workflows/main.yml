@@ -27,6 +27,11 @@ jobs:
           echo "tag=v1.0.0" >> "$GITHUB_OUTPUT"
           echo "name=prod" >> "$GITHUB_OUTPUT"
           
+      - name: using output from first step to second
+        id: second
+        run: |
+          echo "${{steps.first.outputs.name}}"
+          
 
   prod:
     runs-on: ubuntu-latest
