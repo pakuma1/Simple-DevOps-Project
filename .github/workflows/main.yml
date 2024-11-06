@@ -1,0 +1,32 @@
+name: manual approver
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout branch
+        uses: actions/checkout@v3
+
+      - name: run build
+        run: |
+          echo "Building application"
+          echo "Approve the request after build to deploy"
+
+  prod:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: deploy to prod
+        run: echo "deploying to prodcution"
+        
+    environment:
+      name: Prod
+      url: https://test.com
+      
