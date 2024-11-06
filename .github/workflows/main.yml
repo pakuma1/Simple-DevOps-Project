@@ -27,13 +27,14 @@ jobs:
           echo "tag=v1.0.0" >> "$GITHUB_OUTPUT"
           echo "name=prod" >> "$GITHUB_OUTPUT"
           branch_name="${GITHUB_REF#refs/heads/}"
-          echo "branch=$branch_name" >> $GITHUB_ENV
+          version="${branch_name#release_}"    #${branch_name#release_} removes the release_ prefix, leaving only v1.1.2
+          echo "img_version=$version" >> $GITHUB_ENV
           
       - name: using output from first step to second
         id: second
         run: |
           echo "${{steps.first.outputs.name}}"
-          echo "$branch"
+          echo "$img_version"
           
 
   prod:
