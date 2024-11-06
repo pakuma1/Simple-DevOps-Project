@@ -37,6 +37,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
 
+    environment:
+      name: Prod
+      url: https://test.com
+
     steps:
       - name: deploy to prod
         env: 
@@ -45,8 +49,17 @@ jobs:
           echo "deploying to prodcution"
           echo "deploying ${{ needs.build.outputs.image}}:${{ needs.build.outputs.tag}}"
           echo "$name"
-        
-    environment:
-      name: Prod
-      url: https://test.com
+      - name: triggering workflow in devops repository
+        env:
+          image: "${{ needs.build.outputs.image}}:${{ needs.build.outputs.tag}}"
+          environment: ${{ needs.build.outputs.name }}
+        run: |
+          curl -L \
+            -X POST   \
+            -H "Accept: application/vnd.github+json"  \
+            -H "Authorization: Bearer ${{secret.PAT_TOKEN}}" \
+            https://api.github.com/repos/pakuma1/devops/actions/workflows/main.yml/dispatches  \
+             - d '{"ref": "main", "inputs": {"logLevel": "info", "image": $image, "environment": $environment}}'
+
+    
       
