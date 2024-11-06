@@ -35,7 +35,7 @@ jobs:
     steps:
       - name: deploy to prod
         env: 
-          - name: ${{ needs.build.outputs.name }}
+          name: ${{ needs.build.outputs.name }}
         run: |
           echo "deploying to prodcution"
           echo "deploying ${{ needs.build.outputs.image}}:${{ needs.build.outputs.tag}}"
