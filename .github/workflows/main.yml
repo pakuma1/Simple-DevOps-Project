@@ -57,7 +57,7 @@ jobs:
           curl -L \
             -X POST   \
             -H "Accept: application/vnd.github+json"  \
-            -H "Authorization: Bearer ${{secret.PAT_TOKEN}}" \
+            -H "Authorization: Bearer ${{secrets.PAT_TOKEN}}" \
             https://api.github.com/repos/pakuma1/devops/actions/workflows/main.yml/dispatches  \
              - d '{"ref": "main", "inputs": {"logLevel": "info", "image": $image, "environment": $environment}}'
 
