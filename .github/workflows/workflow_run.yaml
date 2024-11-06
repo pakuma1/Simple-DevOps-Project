@@ -1,0 +1,16 @@
+name: using workflow_run
+
+on:
+  workflow_run:
+    workflows: ["manual approver"]
+    types: 
+      - success
+    branches:
+      - 'master'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo "Test"
