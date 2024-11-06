@@ -8,15 +8,25 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.first.outputs.image }}
+      tag: ${{ steps.first.outputs.tag }}
+      name: ${{ steps.first.outputs.name }}
+      
 
     steps:
       - name: checkout branch
         uses: actions/checkout@v3
 
       - name: run build
+        id: first
         run: |
           echo "Building application"
           echo "Approve the request after build to deploy"
+          echo "image=nginx" >> "$GITHUB_OUTPUT"
+          echo "tag=v1.0.0" >> "$GITHUB_OUTPUT"
+          echo "name=prod" >> "$GITHUB_OUTPUT"
+          
 
   prod:
     runs-on: ubuntu-latest
@@ -24,7 +34,12 @@ jobs:
 
     steps:
       - name: deploy to prod
-        run: echo "deploying to prodcution"
+        env: 
+          - name: ${{ needs.build.outputs.name }}
+        run: |
+          echo "deploying to prodcution"
+          echo "deploying ${{ needs.build.outputs.image}}:${{ needs.build.outputs.tag}}"
+          echo "$name"
         
     environment:
       name: Prod
